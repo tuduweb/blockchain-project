@@ -3,9 +3,11 @@ const express = require("express")
 const port = 3000
 
 const EtherData = require("./EtherData")
-const MysqlData = require("./MysqlData")
+const NoteData = require("./NoteData")
 etherdata = new EtherData()
-mysqldata = new MysqlData()
+noteData = new NoteData()
+
+global.etherdata = etherdata
 
 // app.get("/", (req, res) => {
 //     res.send("hello world" + ether.getNonce())
@@ -15,29 +17,39 @@ var router = express.Router()
 
 
 router.get('/addNote', function(req, res, next) {
-    //  将云笔记内容保存到以太坊网络上，并返回交易地址  
-    //var code=global.database.addNote(req.query.id,req.query.name,req.query.content);
-    //  将交易地址保存到req中名为code的查询字段中
-    req.query['code'] = 123;//code;
-    //  将云笔记除了内容以外的数据保存到MySQL数据库中
-    //db.addNote(req,res);
-    mysqldata.addNote(req, res)
+    noteData.addNote(req.query, result =>{
+        res.json({'res': 1, 'data': result})
+    }, err => {
+        console.log(err)
+        res.json({'res': -1, 'result': err})
+    })
 });
 
 router.get('/getList', (req, res, next) => {
-    var result = mysqldata.getNoteList(req, res);
-    console.log(result);
-    //res.send("hello world")
+    noteData.getNoteList(req.query.user_addr, result => {
+        res.json({'res': 0, 'data': result})
+    }, err => {
+        console.log(err)
+        res.json({'res': -1, 'result': err})
+    });
 })
 
 router.get('/getNote', (req, res, next) => {
-    let result = etherdata.getNote(req.query.id, req.query.title, res)
-    //res.json({"content" : result})
+    noteData.getNote(req.query, result => {
+        res.json({'res':0, 'data': result})
+    }, err => {
+        console.log(err)
+        res.json({'res': -1, 'result': err})
+    })
 })
 
 router.get('/editNote', (req, res, next) => {
-    let result = etherdata.editNote(req.query.id, req.query.content)
-    res.json({"res": "yes"})
+    noteData.editNote(req.query, result => {
+        res.send({'res':1, 'data': result})
+    }, err => {
+        console.log(err)
+        res.send({'res':-1, 'result': err})
+    })
 })
 
 router.get('/getAccount', (req, res, next) => {
@@ -47,13 +59,57 @@ router.get('/getAccount', (req, res, next) => {
 
 router.get('/test', (req, res, next) => {
     console.log(req)
-    res.json({'res': 'ok', 'content': req.query})
+    res.json({'res': 0, 'data': req.query})
 })
 
 router.get('/login', (req, res, next) => {
     console.log(req.query)
     
-    res.send({"res":"ok"})
+    let code = req.query.code;//获取小程序传来的code
+    //let encryptedData = params.encryptedData;//获取小程序传来的encryptedData
+    //let iv = params.iv;//获取小程序传来的iv
+    let appid = "wx2495799aa1c0b026";//自己小程序后台管理的appid，可登录小程序后台查看
+    let secret = "ffb3724c40cfa5ba902e7a5c20213927";//小程序后台管理的secret，可登录小程序后台查看
+    let grant_type = "authorization_code";// 授权（必填）默认值
+    
+    //请求获取openid
+    let url = "https://api.weixin.qq.com/sns/jscode2session?grant_type="+grant_type+"&appid="+appid+"&secret="+secret+"&js_code="+code;
+    
+    let openid,sessionKey;
+    
+    let https = require("https");
+    
+    https.get(url, (result) => {
+        result.on('data', (d) => {
+            console.log('返回的信息: ', JSON.parse(d));
+            openid = JSON.parse(d).openid;//得到openid
+            sessionKey = JSON.parse(d).session_key;//得到session_key
+
+            //根据openId读取数据库的私链账户
+            //let mysql = require("mysql")
+            noteData.getAccountAddress(openid, result => {
+                res.json({'res': 1, 'data': result[0], 'address': result[0].account_addr})
+            }, (result, addr) => {
+                res.json({'res': 0, 'data': {open_id : openid, 'id': result.insertId, 'account_addr': addr}})
+            }, (err, addr) => {
+                res.json({'res': -1, 'result': err})
+            }, err =>{
+                res.json({'res': -2, 'err': err})
+            })
+            //res.send({"res":"ok", "openid": openid})
+        }).on('error', (e) => {
+            console.error(e);
+        });
+    });
+  
+})
+
+
+router.get('/unlock', (req, res, next) => {
+    console.log(req.query)
+    etherdata.unlockAccount(req.query.user_addr, req.query.openid, 3600).then(
+        res.send({'res': 0})
+    )
 })
 
 module.exports = router;

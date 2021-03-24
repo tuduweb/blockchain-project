@@ -1,59 +1,50 @@
 var Web3=require('web3')
 
-
-
-
 class EtherData
 {
     constructor()
     {
-        var web3=new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:8545"))
-        var abi=JSON.parse('[{"constant":true,"inputs":[{"name":"id","type":"string"}],"name":"getNote","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"id","type":"string"},{"name":"content","type":"string"}],"name":"editNote","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"}]')
-        var contractAddress='0x580DB5d6FA2F9554E0b39583a5Efc52AB2062c12'
+        this.web3=new Web3(new Web3.providers.HttpProvider("http://:8545"))
+        this.rootAccountAddr = '0xc8D1479e95a345427630f87e112e7f43d10AE3ff'
+        this.abi=JSON.parse('[{"constant":false,"inputs":[{"name":"id","type":"uint256"},{"name":"title","type":"string"},{"name":"content","type":"string"}],"name":"editNote","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"id","type":"uint256"}],"name":"getNote","outputs":[{"name":"","type":"string"},{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"}]')
+        this.contractAddress='0x74a4947fCeD132512bDE8C0094a820AFF076a632'
         //定义合约对象，用于调用合约方法
-        var NoteContract=new web3.eth.Contract(abi, contractAddress)
-    }
-
-    //交易数量
-    getNonce()
-    {
-        var nonce = 123;
-        return nonce;
-    }
-
-    //添加or更新笔记 id:用户id name:笔记名称 content:笔记内容
-    addUpdateNote(id, name, content, notefun)
-    {
-        //
+        this.NoteContract=new this.web3.eth.Contract(this.abi, this.contractAddress)
     }
 
     //根据用户id和笔记名称获取笔记内容
-    async getNote(id, title, res)
+    getNote(account, id, callback, errHandle)
     {
-        await NoteContract.methods.getNote(id).call({from:'0xc8D1479e95a345427630f87e112e7f43d10AE3ff'}//,
-        //  (err,res) => 
-        //     {
-        //         if(err){
+        console.log(account)
+        this.NoteContract.methods.getNote(id).call({from: account},
+        (err, res) => 
+        {
+            if(err){
 
-        //             console.log("Error: ",err);
-        //             return {"code":"0000", "content": null};
-        //         }
-        //         else{
-        //             console.log("Result: ",res);
-        //             return {"id": id, "content": res}
-        //         }
-        //     }
-        ).then((receipt) => {
-            console.log(receipt)
-            res.json({"content" : receipt})
+                console.log("Error: ",err);
+                errHandle(err)
+            }
+            else{
+                console.log("Result: ", res);
+                callback(res)
+            }
         })
-
-        //return {"id": id, "content": "hello this is ether content"}
     }
 
-    editNote(id, content)
+    editNote(account, openid, id, title, content, callback, errCallback)
     {
-        return {"id" : id}
+        console.log("account:" + account + "  ,open_id" + openid)
+        this.web3.eth.personal.unlockAccount(account, openid, 3600).then(
+            this.NoteContract.methods.editNote(id, title, content).send({from: account}, (err,res) => {
+                if(err)
+                {
+                    errCallback(err)
+                }else{
+                    callback(res)
+                }
+            })
+        )
+
     }
 
     //返回交易状态
@@ -65,12 +56,72 @@ class EtherData
     getAccount(req, res)
     {
 
-        web3.eth.getAccounts().then((result) => {
+        this.web3.eth.getAccounts().then((result) => {
             console.log(result)
             res.send(result)
         })
 
     }
+
+    createAccount(openid, callback, errHandle)
+    {
+        let pwd = openid
+        try{
+            this.web3.eth.personal.newAccount(pwd, (err, addr) => {
+                if(err){
+                    console.log(err)
+                    throw err
+                }else{
+                    console.log('new addr:' + addr)
+                    this.web3.eth.personal.unlockAccount(addr, pwd, 3600).then(
+                        this.web3.eth.sendTransaction({
+                            from: this.rootAccountAddr,
+                            to: addr,
+                            value: this.web3.utils.toWei('1','ether')
+                        },"",
+                        (err,res)=>{
+                            if(err)
+                            {
+                                console.log("Error: ",err)
+                                throw err
+                            }
+                            else
+                            {
+                                console.log("Result: ", res);
+                                let balance = 0
+                                this.web3.eth.getBalance(addr).then( res => {
+                                    console.log('balance:' + res)
+                                    balance = res
+                                })
+
+                                callback(addr, balance)
+            
+                            }
+                    })
+                    )
+                }
+            })
+        }catch(err){
+            console.log(err)
+            errHandle(err)
+        }
+    }
+
+    unlockAccount(account, openid, time){
+        console.log(account)
+        return this.web3.eth.personal.unlockAccount(account, openid, time)
+    }
+
+    lockAccount(account, callback, errCallback){
+        return this.web3.eth.personal.lockAccount(account, (err, res) => {
+            if(err){
+                errCallback(err)
+            }else{
+                callback(res)
+            }
+        })
+    }
+
 }
 //导出类别
 module.exports = EtherData;
