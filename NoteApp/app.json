@@ -1,0 +1,25 @@
+{
+  "pages":[
+    "pages/note/note",
+    "pages/add/add",
+    "pages/view/view",
+    "pages/edit/edit",
+
+    "pages/index/index",
+    "pages/logs/logs"
+  ],
+
+  "entryPagePath": "pages/index/index",
+  
+  "window":{
+    "backgroundTextStyle":"light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "Weixin",
+    "navigationBarTextStyle":"black"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "useExtendedLib": {
+    "weui": true
+  }
+}
