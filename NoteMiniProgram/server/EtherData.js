@@ -6,8 +6,8 @@ class EtherData
     {
         this.web3=new Web3(new Web3.providers.HttpProvider("http://:8545"))
         this.rootAccountAddr = '0xc8D1479e95a345427630f87e112e7f43d10AE3ff'
-        this.abi=JSON.parse('[{"constant":false,"inputs":[{"name":"id","type":"uint256"},{"name":"title","type":"string"},{"name":"content","type":"string"}],"name":"editNote","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"id","type":"uint256"}],"name":"getNote","outputs":[{"name":"","type":"string"},{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"}]')
-        this.contractAddress='0x74a4947fCeD132512bDE8C0094a820AFF076a632'
+        this.abi=JSON.parse('[{"constant":false,"inputs":[{"internalType":"uint256","name":"id","type":"uint256"},{"internalType":"string","name":"title","type":"string"},{"internalType":"string","name":"content","type":"string"}],"name":"editNote","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"internalType":"uint256","name":"id","type":"uint256"}],"name":"getNote","outputs":[{"internalType":"string","name":"","type":"string"},{"internalType":"string","name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"}]')
+        this.contractAddress='0xe14e5EF36c09a736e6E5641088539968D94FBDA0'
         //定义合约对象，用于调用合约方法
         this.NoteContract=new this.web3.eth.Contract(this.abi, this.contractAddress)
     }
