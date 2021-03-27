@@ -22,7 +22,7 @@ Page({
       id: options.id
     })
     wx.request({
-      url: 'http://127.0.0.1:3000/getNote', //仅为示例，并非真实的接口地址
+      url: getApp().globalData.remote_url + 'getNote', //仅为示例，并非真实的接口地址
       data: {
         'id': options.id,
         'user_addr': getApp().globalData.account_addr

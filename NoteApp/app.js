@@ -21,7 +21,7 @@ App({
         if (res.code) {
           //发起网络请求
           wx.request({
-            url: 'http://127.0.0.1:3000/login',
+            url: getApp().globalData.remote_url + 'login',
             data: {
               code: res.code
             },
@@ -36,7 +36,7 @@ App({
               getApp().globalData.account_addr = res.data.data.account_addr
               console.log(getApp().globalData)
               wx.request({
-                url: 'http://127.0.0.1:3000/unlock',
+                url: getApp().globalData.remote_url + '/unlock',
                 data: {
                   'user_addr': getApp().globalData.account_addr,
                   'openid': getApp().globalData.openid
@@ -59,6 +59,7 @@ App({
   globalData: {
     userInfo: null,
     openid: null,
-    account_addr: null
+    account_addr: null,
+    remote_url: 'http://116.62.132.128:3000/'
   }
 })
