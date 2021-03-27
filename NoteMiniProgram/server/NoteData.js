@@ -100,7 +100,7 @@ class NoteData {
                 errHandle(err)
             }else{
                 if(result.length === 0){
-                    errHandle({'reason': 'id is invalid', 'result': result})
+                    errHandle({'result': 'id is invalid', 'res': result})
                 }else{
                     if(result[0]['note_status'] > 0)
                     {
@@ -110,7 +110,7 @@ class NoteData {
                             errHandle(err)
                         })
                     }else{
-                        errHandle({'reason': 'id:' + result[0]['id']+ ' is invalid, cause note_status <= 0'})
+                        errHandle({'result': 'id:' + result[0]['id']+ ' is invalid, cause note_status <= 0'})
                     }
                 }
             }
