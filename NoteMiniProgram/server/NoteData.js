@@ -26,6 +26,7 @@ class NoteData {
             })
     }
 
+    //user_addr, open_id, title, content
     addNote(reqdata, callback, errHandle) {
         try {
             this.connection.query("insert into notes set ?", {
@@ -116,6 +117,7 @@ class NoteData {
         })
     }
 
+    //账户标识, 查询到账号的回调, 新建账号的回调, 创建账号失败, 增加到数据库失败
     getAccountAddress(openid, callback, newAccountCallback, errHandleInCreate, errHandleInInsert) {
         this.connection.query("select * from users where ? limit 1",
             { open_id: openid },

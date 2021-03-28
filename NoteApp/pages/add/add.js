@@ -16,7 +16,6 @@ Page({
 
     console.log(e.detail.value)
 
-    return;
     wx.request({
       url: getApp().globalData.remote_url + ( this.data.id > 0 ? 'editNote': 'addNote'),
       data: {

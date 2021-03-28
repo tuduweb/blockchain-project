@@ -1,17 +1,7 @@
 // app.js
-App({
-  onLaunch() {
-    // 展示本地存储能力
-    const logs = wx.getStorageSync('logs') || []
-    logs.unshift(Date.now())
-    wx.setStorageSync('logs', logs)
 
-    // 登录
-    // wx.login({
-    //   success: res => {
-    //     // 发送 res.code 到后台换取 openId, sessionKey, unionId
-    //   }
-    // })
+App({
+  login: () => {
     wx.showLoading({
       title: '玩命加载中',
     })
@@ -35,16 +25,7 @@ App({
               getApp().globalData.openid = res.data.data.open_id
               getApp().globalData.account_addr = res.data.data.account_addr
               console.log(getApp().globalData)
-              wx.request({
-                url: getApp().globalData.remote_url + 'unlock',
-                data: {
-                  'user_addr': getApp().globalData.account_addr,
-                  'openid': getApp().globalData.openid
-                },
-                success: (res) => {
-                  console.log(res.data.res)
-                }
-              })
+  
               wx.redirectTo({
                 url: '/pages/note/note'
               })
@@ -55,6 +36,25 @@ App({
         }
       }
     })
+  },
+  onLaunch() {
+    // 展示本地存储能力
+    const logs = wx.getStorageSync('logs') || []
+    logs.unshift(Date.now())
+    wx.setStorageSync('logs', logs)
+
+    console.log("hello world")
+    setTimeout(() => {
+      getApp().login()
+    }, 200);
+
+    // 登录
+    // wx.login({
+    //   success: res => {
+    //     // 发送 res.code 到后台换取 openId, sessionKey, unionId
+    //   }
+    // })
+
   },
   globalData: {
     userInfo: null,
