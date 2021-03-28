@@ -1,5 +1,4 @@
 const mysql = require("mysql")
-const moment = require('moment');
 const EtherData = require("./EtherData");
 
 class NoteData {
@@ -16,9 +15,9 @@ class NoteData {
     }
 
     //获取用户的笔记本数据
-    getNoteList(user_addr, callback, errHandle) {
+    getNoteList(reqdata, callback, errHandle) {
         this.connection.query("select * from `notes` where `user_addr`=? and `note_status`=? order by `update_time` desc",
-            [user_addr, 1],
+            [reqdata.user_addr, 1],
             (err, result) => {
                 if (err) {
                     errHandle(err)

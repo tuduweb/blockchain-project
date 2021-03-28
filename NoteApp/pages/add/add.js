@@ -13,8 +13,12 @@ Page({
     wx.showLoading({
       title: '保存中'
     })
+
+    console.log(e.detail.value)
+
+    return;
     wx.request({
-      url: this.data.id > 0 ? 'http://127.0.0.1:3000/editNote': 'http://127.0.0.1:3000/addNote',
+      url: getApp().globalData.remote_url + ( this.data.id > 0 ? 'editNote': 'addNote'),
       data: {
         'id': this.data.id,
         'user_addr': getApp().globalData.account_addr,
@@ -51,7 +55,7 @@ Page({
       console.log(options.id)
       this.setData({id:options.id})
       wx.request({
-        url: 'http://127.0.0.1:3000/getNote', //仅为示例，并非真实的接口地址
+        url: getApp().globalData.remote_url + 'getNote', //仅为示例，并非真实的接口地址
         data: {
           'id': decodeURIComponent(options.id),
           'user_addr': getApp().globalData.account_addr
