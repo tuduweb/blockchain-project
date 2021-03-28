@@ -36,7 +36,7 @@ App({
               getApp().globalData.account_addr = res.data.data.account_addr
               console.log(getApp().globalData)
               wx.request({
-                url: getApp().globalData.remote_url + '/unlock',
+                url: getApp().globalData.remote_url + 'unlock',
                 data: {
                   'user_addr': getApp().globalData.account_addr,
                   'openid': getApp().globalData.openid

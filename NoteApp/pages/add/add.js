@@ -13,6 +13,10 @@ Page({
     wx.showLoading({
       title: '保存中'
     })
+
+    console.log(e.detail.value)
+
+    return;
     wx.request({
       url: getApp().globalData.remote_url + ( this.data.id > 0 ? 'editNote': 'addNote'),
       data: {

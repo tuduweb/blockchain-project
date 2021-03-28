@@ -8,7 +8,7 @@
 		<view class="weui-panel">
 			<view class="weui-panel__hd">笔记列表</view>
 			<view class="weui-panel__hd" wx:for="{{notes}}" wx:key="id">
-				<view class="weui-media-box weui-media-box_text"  data-title="{{item.title}}" data-nid="{{item.id}}" bindtap="bindShowNote">
+				<view class="weui-media-box weui-media-box_text note-item"  data-title="{{item.title}}" data-nid="{{item.id}}" bindtap="bindShowNote">
 					<h4 class="weui-media-box__title">{{item.title}}</h4>
 					<view class="weui-media-box__info">
 						<view class="weui-media-box__info__meta">更新时间：{{item.update_time}}</view>
