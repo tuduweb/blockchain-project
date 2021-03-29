@@ -94,11 +94,12 @@ router.get('/login', (req, res, next) => {
             }, (err, addr) => {
                 res.json({'res': -1, 'result': err})
             }, err =>{
-                res.json({'res': -2, 'err': err})
+                res.json({'res': -2, 'result': err})
             })
             //res.send({"res":"ok", "openid": openid})
         }).on('error', (e) => {
             console.error(e);
+            res.json({'res': -3, 'result': e})
         });
     });
   

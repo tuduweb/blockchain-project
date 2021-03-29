@@ -1,5 +1,5 @@
 var Web3=require('web3')
-var web3=new Web3(new Web3.providers.HttpProvider(""))
+var web3=new Web3(new Web3.providers.HttpProvider("http://116.62.132.128:8545"))
 //通过api以及合约地址找到链上合约
 var abi=JSON.parse('[{"constant":false,"inputs":[{"name":"id","type":"uint256"},{"name":"title","type":"string"},{"name":"content","type":"string"}],"name":"editNote","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"id","type":"uint256"}],"name":"getNote","outputs":[{"name":"","type":"string"},{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"}]')
 var contractAddress='0x74a4947fCeD132512bDE8C0094a820AFF076a632'

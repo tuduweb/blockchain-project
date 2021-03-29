@@ -1,2 +1,7 @@
 node_modules/
+build/
+migrations/
+truffletest/
+truffletest
+truffle-config.js
 .DS_Store
