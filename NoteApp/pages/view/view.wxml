@@ -1,13 +1,13 @@
 <view class="page">
   <view class="page__hd">
-    <view class="page__title h1">{{title}}</view>
+    <view id="page-title" class="page__title h1">{{title}}</view>
     <view class="page__desc">每一条笔记，是记录在头歌的进步！</view>
     <view class="page-btns"><a class="weui-btn weui-btn_mini weui-btn_default" bindtap="bindEditNote">修改笔记</a></view>
 
   </view>
   <view class="page__bd" style="background-color:#fff;">
     <view class="weui-article">
-      <view class="weui-article__section">
+      <view id="page-content" class="weui-article__section">
         {{content}}
       </view>
     </view>

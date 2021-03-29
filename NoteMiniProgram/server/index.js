@@ -26,7 +26,7 @@ router.get('/addNote', function(req, res, next) {
 });
 
 router.get('/getList', (req, res, next) => {
-    noteData.getNoteList(req.query.user_addr, result => {
+    noteData.getNoteList(req.query, result => {
         res.json({'res': 0, 'data': result})
     }, err => {
         console.log(err)

@@ -39,7 +39,7 @@ Page({
    */
   onShow: function () {
     wx.request({
-      url: 'http://127.0.0.1:3000/getList',
+      url: getApp().globalData.remote_url + 'getList',
       data: {
         'user_addr': getApp().globalData.account_addr
       },

@@ -1,5 +1,4 @@
 const mysql = require("mysql")
-const moment = require('moment');
 const EtherData = require("./EtherData");
 
 class NoteData {
@@ -16,9 +15,9 @@ class NoteData {
     }
 
     //获取用户的笔记本数据
-    getNoteList(user_addr, callback, errHandle) {
+    getNoteList(reqdata, callback, errHandle) {
         this.connection.query("select * from `notes` where `user_addr`=? and `note_status`=? order by `update_time` desc",
-            [user_addr, 1],
+            [reqdata.user_addr, 1],
             (err, result) => {
                 if (err) {
                     errHandle(err)
@@ -27,6 +26,7 @@ class NoteData {
             })
     }
 
+    //user_addr, open_id, title, content
     addNote(reqdata, callback, errHandle) {
         try {
             this.connection.query("insert into notes set ?", {
@@ -100,7 +100,7 @@ class NoteData {
                 errHandle(err)
             }else{
                 if(result.length === 0){
-                    errHandle({'reason': 'id is invalid', 'result': result})
+                    errHandle({'result': 'id is invalid', 'res': result})
                 }else{
                     if(result[0]['note_status'] > 0)
                     {
@@ -110,13 +110,14 @@ class NoteData {
                             errHandle(err)
                         })
                     }else{
-                        errHandle({'reason': 'id:' + result[0]['id']+ ' is invalid, cause note_status <= 0'})
+                        errHandle({'result': 'id:' + result[0]['id']+ ' is invalid, cause note_status <= 0'})
                     }
                 }
             }
         })
     }
 
+    //账户标识, 查询到账号的回调, 新建账号的回调, 创建账号失败, 增加到数据库失败
     getAccountAddress(openid, callback, newAccountCallback, errHandleInCreate, errHandleInInsert) {
         this.connection.query("select * from users where ? limit 1",
             { open_id: openid },
