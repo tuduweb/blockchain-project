@@ -16,18 +16,23 @@ class EtherData
     getNote(account, id, callback, errHandle)
     {
         console.log(account)
-        this.NoteContract.methods.getNote(id).call({from: account}, (err, res) => 
-        {
-            if(err){
+        //调用合约中方法需要先解锁账户
+        this.web3.eth.personal.unlockAccount(account, openid, 3600).then(
 
-                console.log("Error: ",err);
-                errHandle(err)
-            }
-            else{
-                console.log("Result: ", res);
-                callback(res)
-            }
-        })
+            this.NoteContract.methods.getNote(id).call({from: account}, (err, res) => 
+            {
+                if(err){
+                    console.log("Error: ",err);
+                    errHandle(err)
+                }
+                else{
+                    console.log("Result: ", res);
+                    callback(res)
+                }
+            })
+
+        )
+
     }
 
     editNote(account, openid, id, title, content, callback, errCallback)
@@ -72,32 +77,25 @@ class EtherData
                     throw err
                 }else{
                     console.log('new addr:' + addr)
-                    this.web3.eth.personal.unlockAccount(addr, pwd, 3600).then(
-                        this.web3.eth.sendTransaction({
-                            from: this.rootAccountAddr,
-                            to: addr,
-                            value: this.web3.utils.toWei('1','ether')
-                        },"",
-                        (err,res)=>{
-                            if(err)
-                            {
-                                console.log("Error: ",err)
-                                throw err
-                            }
-                            else
-                            {
-                                console.log("Result: ", res);
-                                let balance = 0
-                                this.web3.eth.getBalance(addr).then( res => {
-                                    console.log('balance:' + res)
-                                    balance = res
-                                })
 
-                                callback(addr, balance)
-            
-                            }
+
+                    this.web3.eth.sendTransaction({
+                        from: this.rootAccountAddr,
+                        to: addr,
+                        value: this.web3.utils.toWei('1','ether')
+                    },"",
+                    (err,res)=>{
+                        if(err)
+                        {
+                            console.log("Error: ",err)
+                            throw err
+                        }
+                        else
+                        {
+                            callback(addr)
+                        }
                     })
-                    )
+
                 }
             })
         }catch(err){
@@ -105,6 +103,7 @@ class EtherData
             errHandle(err)
         }
     }
+
 
     unlockAccount(account, openid, time){
         console.log(account)
