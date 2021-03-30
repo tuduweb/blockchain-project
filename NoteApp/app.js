@@ -60,6 +60,6 @@ App({
     userInfo: null,
     openid: null,
     account_addr: null,
-    remote:"http://192.168.123.82:3000"
+    api_server_url:"http://192.168.123.82:3000"
   }
 })

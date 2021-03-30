@@ -10,12 +10,12 @@
       <view class="weui-form__control-area">
         <view class="weui-cells__group weui-cells__group_form">
           <view class="weui-cells__title">
-            <input id="title" name="title" type="text" style="color:#000;font-size:18px;" placeholder="笔记标题" value=""/>
+            <input name="title" type="text" style="color:#000;font-size:18px;" placeholder="笔记标题" value=""/>
           </view>
           <view class="weui-cells weui-cells_form">
             <view class="weui-cell">
               <view class="weui-cell__bd">
-                <textarea id="content" class="weui-textarea" name="content" placeholder="请输入你的笔记内容" placeholder-class="weui-input__placeholder"
+                <textarea class="weui-textarea" name="content" placeholder="请输入你的笔记内容" placeholder-class="weui-input__placeholder"
                   rows="3"></textarea>
                 <view class="weui-textarea-counter"><span>0</span>/200</view>
               </view>
