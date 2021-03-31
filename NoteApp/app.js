@@ -7,11 +7,11 @@ App({
     })
     wx.login({
       success (res) {
-        console.log(res)
+        //console.log(res)
         if (res.code) {
           //发起网络请求
           wx.request({
-            url: getApp().globalData.remote_url + 'login',
+            url: getApp().globalData.remote + 'login',
             data: {
               code: res.code
             },
@@ -60,6 +60,6 @@ App({
     userInfo: null,
     openid: null,
     account_addr: null,
-    remote_url: 'http://116.62.132.128:3000/'
+    api_server_url:"http://192.168.123.82:3000"
   }
 })

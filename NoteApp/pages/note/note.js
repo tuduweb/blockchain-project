@@ -39,15 +39,18 @@ Page({
    */
   onShow: function () {
     wx.request({
-      url: getApp().globalData.remote_url + 'getList',
+      url: getApp().globalData.api_server_url + 'getList',
       data: {
         'user_addr': getApp().globalData.account_addr
       },
       success : (res) => {
         console.log(res)
-        this.setData({
-          notes : res.data.data
-        })
+        if(res >= 0)
+        {
+          this.setData({
+            notes : res.data.data
+          })
+        }
       }
     })
 

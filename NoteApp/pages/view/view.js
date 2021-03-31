@@ -22,10 +22,11 @@ Page({
       id: options.id
     })
     wx.request({
-      url: getApp().globalData.remote_url + 'getNote', //仅为示例，并非真实的接口地址
+      url: getApp().globalData.api_server_url + 'getNote', //仅为示例，并非真实的接口地址
       data: {
         'id': options.id,
-        'user_addr': getApp().globalData.account_addr
+        'user_addr': getApp().globalData.account_addr,
+        'openid': getApp().globalData.openid
       },
       success: (res) => {
         console.log(res.data)

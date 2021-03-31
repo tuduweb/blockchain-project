@@ -4,7 +4,7 @@ const EtherData = require("./EtherData");
 class NoteData {
     constructor() {
         this.connection = mysql.createConnection({
-            host: '116.62.132.128',
+            host: '192.168.123.243',
             user: 'root',
             password: 'root',
             database: 'miniprogram_note',
