@@ -2,11 +2,17 @@
 	<view class="page__hd">
 		<view class="page__title">笔记列表</view>
     <view class="page__desc">记录在头歌进步的每一瞬间！</view>
-		<button class="weui-btn weui-btn_primary" bindtap="bindAddNote">发布</button>
+		<button class="weui-btn weui-btn_primary" bindtap="bindAddNote" wx:if="{{ isLogin }}">发布</button>
+		<button class="weui-btn weui-btn_warn" bindtap="bindLogin" wx:else>点击登录云笔记</button>
 	</view>
+
+	
+
+
 	<view class="page__bd">
 		<view class="weui-panel">
 			<view class="weui-panel__hd">笔记列表</view>
+
 			<view id="note-list" class="weui-panel__hd" wx:for="{{notes}}" wx:key="id">
 				<view class="weui-media-box weui-media-box_text note-item"  data-title="{{item.title}}" data-nid="{{item.id}}" bindtap="bindShowNote">
 					<h4 class="weui-media-box__title item-title">{{item.title}}</h4>

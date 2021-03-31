@@ -3,15 +3,15 @@
 App({
   login: () => {
     wx.showLoading({
-      title: '玩命加载中',
+      title: '玩命登录中',
     })
     wx.login({
       success (res) {
-        //console.log(res)
+        console.log(res)
         if (res.code) {
           //发起网络请求
           wx.request({
-            url: getApp().globalData.remote + 'login',
+            url: getApp().globalData.api_server_url + 'login',
             data: {
               code: res.code
             },
@@ -29,6 +29,9 @@ App({
               wx.redirectTo({
                 url: '/pages/note/note'
               })
+            },
+            complete: e => {
+              console.log(e)
             }
           })
         } else {
@@ -43,10 +46,10 @@ App({
     logs.unshift(Date.now())
     wx.setStorageSync('logs', logs)
 
-    console.log("hello world")
-    setTimeout(() => {
-      getApp().login()
-    }, 200);
+    // console.log("hello world")
+    // setTimeout(() => {
+    //   getApp().login()
+    // }, 200);
 
     // 登录
     // wx.login({
@@ -60,6 +63,7 @@ App({
     userInfo: null,
     openid: null,
     account_addr: null,
-    api_server_url:"http://192.168.123.82:3000"
+    //api_server_url:"http://192.168.123.82:3000/"
+    api_server_url:"http://127.0.0.1:3000/"
   }
 })

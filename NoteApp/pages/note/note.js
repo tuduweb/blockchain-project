@@ -5,8 +5,9 @@ Page({
    * 页面的初始数据
    */
   data: {
-    notes: []
+    notes: [],
   },
+
   bindShowNote(e){
     console.log(e.target)
     console.log(e.currentTarget)
@@ -19,6 +20,9 @@ Page({
       url: '/pages/add/add'
     })
     console.log(e)
+  },
+  bindLogin(e){
+    getApp().login()
   },
   /**
    * 生命周期函数--监听页面加载
@@ -38,21 +42,31 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    wx.request({
-      url: getApp().globalData.api_server_url + 'getList',
-      data: {
-        'user_addr': getApp().globalData.account_addr
-      },
-      success : (res) => {
-        console.log(res)
-        if(res >= 0)
-        {
-          this.setData({
-            notes : res.data.data
-          })
+
+    if(getApp().globalData.account_addr == null)
+    {
+      
+    }else{
+      this.setData({isLogin : true})
+      wx.request({
+        url: getApp().globalData.api_server_url + 'getList',
+        data: {
+          'user_addr': getApp().globalData.account_addr
+        },
+        success : (res) => {
+          console.log(res)
+          if(res >= 0)
+          {
+            this.setData({
+              notes : res.data.data
+            })
+          }
         }
-      }
-    })
+      })
+
+    }
+
+
 
   },
 

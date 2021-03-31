@@ -4,12 +4,13 @@
     "pages/add/add",
     "pages/view/view",
     "pages/edit/edit",
-
+    "pages/intro/intro",
+  
     "pages/index/index",
     "pages/logs/logs"
   ],
 
-  "entryPagePath": "pages/index/index",
+  "entryPagePath": "pages/note/note",
   
   "window":{
     "backgroundTextStyle":"light",
