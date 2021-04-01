@@ -6,9 +6,6 @@
 		<button class="weui-btn weui-btn_warn" bindtap="bindLogin" wx:else>点击登录云笔记</button>
 	</view>
 
-	
-
-
 	<view class="page__bd">
 		<view class="weui-panel">
 			<view class="weui-panel__hd">笔记列表</view>

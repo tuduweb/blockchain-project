@@ -54,8 +54,8 @@ Page({
           'user_addr': getApp().globalData.account_addr
         },
         success : (res) => {
-          console.log(res)
-          if(res >= 0)
+          console.log(res.data)
+          if(res.data.res >= 0)
           {
             this.setData({
               notes : res.data.data

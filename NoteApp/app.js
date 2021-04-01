@@ -25,7 +25,7 @@ App({
               getApp().globalData.openid = res.data.data.open_id
               getApp().globalData.account_addr = res.data.data.account_addr
               console.log(getApp().globalData)
-  
+
               wx.redirectTo({
                 url: '/pages/note/note'
               })
