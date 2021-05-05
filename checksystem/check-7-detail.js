@@ -3,16 +3,19 @@ const automator = require('miniprogram-automator')
 automator.connect({
     wsEndpoint: 'ws://localhost:9999'
   }).then(async miniProgram => {
-    const page = await miniProgram.redirectTo('/pages/note/note')
-    //await page.setData({})
-    console.log(await page.data('notes'))
+      
+    //首先需要找到一个笔记的id 再测试前可以先插入数据
+    const page = await miniProgram.redirectTo('/pages/view/view?id=80')
 
+    console.log(await page.data(''))
 
-    //获取渲染的数据
-    const noteListElm = await page.$('#note-list')
-    console.log(noteListElm)
-    const listsElm = await noteListElm.$$('.note-item')
-    console.log(await listsElm[0].text())//->头歌笔记,更新时间..
+    const titleElm = await page.$('#page-title')
+    console.log(await titleElm.text())
+
+    const contentElm = await page.$('#page-content')
+    console.log(await contentElm.text())
+
+    //判断查询的数据正确与否
 
     await miniProgram.disconnect()
 

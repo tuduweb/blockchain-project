@@ -4,30 +4,26 @@ automator.connect({
     wsEndpoint: 'ws://localhost:9999'
   }).then(async miniProgram => {
     const page = await miniProgram.navigateTo('/pages/add/add')
-    await page.setData({})
-    //console.log(page)
 
-    //before: find form
     const form = await page.$('form')
-
-    //check1: input
+    
     const titleInputElm = await form.$('input[name="title"]')
-    console.log("========================================")
-    //如果没有找到 那么为null
-    console.log(titleInputElm)
-    console.log("========================================")
-
-    //check2: textarea
     const contentAreaElm = await form.$('textarea[name="content"]')
-    console.log(contentAreaElm)
+    const submitElm = await form.$('button[form-type="submit"]')
+    //以上元素需要全部存在
 
-    //if not exsit, these param will be NULL
 
-    console.log("****************************************")
+    //曲线测试 直接调用方法
+    await page.callMethod('formSubmit', {'detail': { 'value' : {
+        'title' : '随机生成一个标题',
+        'content': '随机生成一些内容'
+    }}})
 
-    const hasLogin = await miniProgram.evaluate(() => getApp().globalData)
-    console.log(hasLogin)
+    const globalData = await miniProgram.evaluate(() => getApp().globalData)
+    console.log(globalData)
+
+    //完成输入后不允许报错..然后再查找数据库中是否写入成功
 
     await miniProgram.disconnect()
-  })
+})
   
