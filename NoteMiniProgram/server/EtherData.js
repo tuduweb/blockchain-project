@@ -13,7 +13,7 @@ class EtherData
     }
 
     //根据用户id和笔记名称获取笔记内容
-    getNote(account, id, callback, errHandle)
+    getNote(account, openid, id, callback, errHandle)
     {
         console.log(account)
         //调用合约中方法需要先解锁账户

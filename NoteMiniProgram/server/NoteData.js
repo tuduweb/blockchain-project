@@ -104,7 +104,7 @@ class NoteData {
                 }else{
                     if(result[0]['note_status'] > 0)
                     {
-                        etherdata.getNote(reqdata.user_addr, reqdata.id, etherResult => {
+                        etherdata.getNote(reqdata.user_addr, reqdata.openid, reqdata.id, etherResult => {
                             callback({'database': result[0], 'ether': etherResult})
                         }, err => {
                             errHandle(err)
