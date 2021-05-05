@@ -5,3 +5,4 @@ truffletest/
 truffletest
 truffle-config.js
 .DS_Store
+checksystem/package-lock.json

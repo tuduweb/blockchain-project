@@ -23,6 +23,11 @@ automator.connect({
 
     //if not exsit, these param will be NULL
 
+    console.log("****************************************")
+
+    const hasLogin = await miniProgram.evaluate(() => getApp().globalData)
+    console.log(hasLogin)
+
     await miniProgram.disconnect()
   })
   
