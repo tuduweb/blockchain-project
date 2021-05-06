@@ -5,9 +5,9 @@ class EtherData
     constructor()
     {
         this.web3=new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:8545"))//http://116.62.132.128:8545
-        this.rootAccountAddr = '0xb6453F90c0097eFF7cFCB6050385ACAE300ed93B'//'0xc8D1479e95a345427630f87e112e7f43d10AE3ff'
+        this.rootAccountAddr = '0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1'//'0xc8D1479e95a345427630f87e112e7f43d10AE3ff'
         this.abi=JSON.parse('[{"constant":false,"inputs":[{"internalType":"uint256","name":"id","type":"uint256"},{"internalType":"string","name":"title","type":"string"},{"internalType":"string","name":"content","type":"string"}],"name":"editNote","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"internalType":"uint256","name":"id","type":"uint256"}],"name":"getNote","outputs":[{"internalType":"string","name":"","type":"string"},{"internalType":"string","name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"}]')
-        this.contractAddress= '0x596ACEcb458b883E751F42bBf7714b783DDB6476'//'0xe14e5EF36c09a736e6E5641088539968D94FBDA0'
+        this.contractAddress= '0xCfEB869F69431e42cdB54A4F4f105C19C080A601'//'0xe14e5EF36c09a736e6E5641088539968D94FBDA0'
         //定义合约对象，用于调用合约方法
         this.NoteContract=new this.web3.eth.Contract(this.abi, this.contractAddress)
     }
@@ -19,7 +19,7 @@ class EtherData
         //调用合约中方法需要先解锁账户
         this.web3.eth.personal.unlockAccount(account, openid, 3600).then(
 
-            this.NoteContract.methods.getNote(id).call({from: account}, (err, res) => 
+            this.NoteContract.methods.getNote(id).call({from: account, gas: 40000000}, (err, res) => 
             {
                 if(err){
                     console.log("Error: ",err);
